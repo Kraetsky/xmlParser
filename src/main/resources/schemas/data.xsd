@@ -1,0 +1,124 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="MAP-CDR-VERSION13">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element type="xs:string" name="seizureTime"/>
+        <xs:element type="xs:string" name="stopTime"/>
+        <xs:element type="xs:short" name="octetsSent"/>
+        <xs:element type="xs:short" name="octetsReceived"/>
+        <xs:element type="xs:byte" name="msusSent"/>
+        <xs:element type="xs:byte" name="msusReceived"/>
+        <xs:element name="status">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element type="xs:string" name="normal"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="mtp3Data">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element type="xs:short" name="opc"/>
+              <xs:element type="xs:short" name="dpc"/>
+              <xs:element type="xs:byte" name="ni"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="sccpData">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element type="xs:string" name="origGlobalTitle"/>
+              <xs:element type="xs:string" name="termGlobalTitle"/>
+              <xs:element type="xs:byte" name="calledNoA"/>
+              <xs:element type="xs:byte" name="callingNoA"/>
+              <xs:element type="xs:byte" name="calledNP"/>
+              <xs:element type="xs:byte" name="callingNP"/>
+              <xs:element type="xs:byte" name="calledSSN"/>
+              <xs:element type="xs:byte" name="callingSSN"/>
+              <xs:element type="xs:byte" name="callingAddrInd"/>
+              <xs:element type="xs:byte" name="calledAddrInd"/>
+              <xs:element type="xs:byte" name="callingTransType"/>
+              <xs:element type="xs:byte" name="calledTransType"/>
+              <xs:element type="xs:string" name="firstTermGlobalTitle"/>
+              <xs:element type="xs:byte" name="firstCalledNoA"/>
+              <xs:element type="xs:byte" name="firstCalledNP"/>
+              <xs:element type="xs:byte" name="firstCalledTransType"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="mapData">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="tcapData">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element type="xs:string" name="otid"/>
+                    <xs:element type="xs:byte" name="firstOpcode"/>
+                    <xs:element type="xs:byte" name="lastOpcode"/>
+                    <xs:element type="xs:byte" name="firstTcapMessageType"/>
+                    <xs:element type="xs:byte" name="lastTcapMessageType"/>
+                    <xs:element type="xs:byte" name="firstMessageComponentType"/>
+                    <xs:element type="xs:byte" name="lastMessageComponentType"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element type="xs:string" name="imsi"/>
+              <xs:element type="xs:byte" name="nrOfTriplets"/>
+              <xs:element type="xs:byte" name="map-version"/>
+              <xs:element name="authenticationData">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element type="xs:byte" name="numberOfRequestedVectors"/>
+                    <xs:element type="xs:byte" name="numberOfTriplets"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="linkStatistics">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element type="xs:string" name="linkStatisticsList"/>
+              <xs:element type="xs:byte" name="numberOfMsusWithoutLinkPC"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="linkDataList">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="LinkItem" maxOccurs="unbounded" minOccurs="0">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="link">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="ipv4">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element type="xs:int" name="src"/>
+                                <xs:element type="xs:int" name="dst"/>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="volume">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element type="xs:byte" name="packets"/>
+                          <xs:element type="xs:short" name="octets"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
