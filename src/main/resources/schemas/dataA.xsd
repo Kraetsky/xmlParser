@@ -1,0 +1,111 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="A-INTERFACE-CDR-VERSION8">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="mo-sms">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="common-data">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element type="xs:string" name="seizure-time"/>
+                    <xs:element type="xs:string" name="end-time"/>
+                    <xs:element type="xs:long" name="monitoringInterfaceId"/>
+                    <xs:element name="timeout">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element type="xs:string" name="false"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element type="xs:short" name="msc-pc"/>
+                    <xs:element type="xs:short" name="bsc-pc"/>
+                    <xs:element name="first-cell-identifier">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element type="xs:int" name="lac"/>
+                          <xs:element type="xs:int" name="cell"/>
+                          <xs:element type="xs:string" name="mcc"/>
+                          <xs:element type="xs:byte" name="mnc"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="current-cell-identifier">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element type="xs:int" name="lac"/>
+                          <xs:element type="xs:int" name="cell"/>
+                          <xs:element type="xs:string" name="mcc"/>
+                          <xs:element type="xs:byte" name="mnc"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element type="xs:byte" name="cmServiceType"/>
+                    <xs:element type="xs:string" name="imsi"/>
+                    <xs:element type="xs:int" name="first-tmsi"/>
+                    <xs:element type="xs:int" name="current-tmsi"/>
+                    <xs:element type="xs:byte" name="bssmap-cause"/>
+                    <xs:element name="cm-aborted">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element type="xs:string" name="false"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element type="xs:string" name="classMark2"/>
+                    <xs:element type="xs:string" name="classMark3"/>
+                    <xs:element type="xs:string" name="ciphModeCommandTime"/>
+                    <xs:element type="xs:string" name="ciphModeCompleteTime"/>
+                    <xs:element type="xs:string" name="clearCommandTime"/>
+                    <xs:element type="xs:byte" name="sccpCause"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="sms-data">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="SMSData">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element type="xs:string" name="smsStartTime"/>
+                          <xs:element type="xs:string" name="smsEndTime"/>
+                          <xs:element name="rpDestAddress">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element type="xs:byte" name="natureOfAddress"/>
+                                <xs:element type="xs:string" name="addressString"/>
+                                <xs:element type="xs:byte" name="numberPlan"/>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="tpDestAddress">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element type="xs:byte" name="natureOfAddress"/>
+                                <xs:element type="xs:string" name="addressString"/>
+                                <xs:element type="xs:byte" name="numberPlan"/>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element type="xs:byte" name="mess-reference"/>
+                          <xs:element type="xs:string" name="submitTime"/>
+                          <xs:element type="xs:string" name="rpAckSMSCTime"/>
+                          <xs:element type="xs:byte" name="ieIdentifier"/>
+                          <xs:element type="xs:short" name="concatRef"/>
+                          <xs:element type="xs:byte" name="concatMax"/>
+                          <xs:element type="xs:byte" name="concatSeq"/>
+                          <xs:element type="xs:short" name="smsLength"/>
+                          <xs:element type="xs:byte" name="smsMsgType"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

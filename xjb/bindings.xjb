@@ -1,20 +1,27 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<jaxb:bindings
-               xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-               xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
-               xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
-               jaxb:version="2.1">
 
-    <jaxb:bindings>
-        <jaxb:globalBindings localScoping="toplevel">
-            <xjc:simple/>
-        </jaxb:globalBindings>
-    </jaxb:bindings>
+<jxb:bindings version="2.0"
+              xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
+              xmlns:xs="http://www.w3.org/2001/XMLSchema"
+              xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
+              xmlns:annox="http://annox.dev.java.net"
+                  xmlns:namespace="http://jaxb2-commons.dev.java.net/namespace-prefix">
+<jxb:globalBindings localScoping="toplevel"/>
+  <jxb:bindings schemaLocation="../src/main/resources/schemas/dataA.xsd">
 
-    <jaxb:bindings schemaLocation="../src/main/resources/schemas/data.xsd" node="/xsd:schema">
-        <jaxb:schemaBindings>
-            <jaxb:package name="examples.schema"/>
-        </jaxb:schemaBindings>
-    </jaxb:bindings>
+      <jxb:schemaBindings>
+          <jxb:package name="examples.schema"/>
+      </jxb:schemaBindings>
 
-</jaxb:bindings>
+
+       <jxb:bindings node="//xs:element[@name='sms-data']/xs:complexType/xs:sequence/xs:element[@name='SMSData']/xs:complexType">
+            <jxb:class name="SmsDataChild"/>
+       </jxb:bindings>
+
+      <jxb:bindings node="//xs:element[@name='sms-data']/xs:complexType/xs:sequence/xs:element[@name='SMSData']">
+           <jxb:property name="smsDataChild"/>
+      </jxb:bindings>
+
+
+  </jxb:bindings>
+
+</jxb:bindings>
