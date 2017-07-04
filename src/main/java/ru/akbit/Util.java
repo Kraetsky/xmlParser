@@ -91,7 +91,7 @@ public class Util {
         return tempResult.substring(0, tempResult.length() - 1);
     }
 
-    public static Date getFormattedTime(String time) {
+    public static String getFormattedTime(String time) {
         if (time != null) {
             String[] arr = time.split(" ");
             StringBuilder sb = new StringBuilder();
@@ -105,7 +105,7 @@ public class Util {
 
             Date date = new Date(Long.parseLong(sb.toString()));
 
-            return date;
+            return date.toString();
         } else {
             return null;
         }

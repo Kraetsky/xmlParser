@@ -27,7 +27,7 @@ public class AINTERFACECDRVERSION8Decorator implements Decorator {
     }
 
     @XmlElement
-    public Date getSmsStartTime() {
+    public String getSmsStartTime() {
         return getFormattedTime(ainterfacecdrversion8.getMoSms().getSmsData().getSmsDataChild().getSmsStartTime());
     }
 

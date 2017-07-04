@@ -28,12 +28,15 @@ public class AINTERFACECDRVERSION8DecoratorAllFields implements Decorator {
     }
 
     @XmlElement
-    public Date getSmsStartTime() {
+    public String getSmsStartTime() {
         return getFormattedTime(ainterfacecdrversion8.getMoSms().getSmsData().getSmsDataChild().getSmsStartTime());
     }
 
     @XmlElement
-    public Date getSmsEndTime() {
+    public String getSmsEndTime() {
+        if (ainterfacecdrversion8.getMoSms().getSmsData().getSmsDataChild().getSmsEndTime()==null){
+            return "";
+        }
         return getFormattedTime(ainterfacecdrversion8.getMoSms().getSmsData().getSmsDataChild().getSmsEndTime());
     }
 
@@ -43,12 +46,18 @@ public class AINTERFACECDRVERSION8DecoratorAllFields implements Decorator {
     }
 
     @XmlElement
-    public Date getSubmitTime() {
+    public String getSubmitTime() {
+        if (ainterfacecdrversion8.getMoSms().getSmsData().getSmsDataChild().getSubmitTime()==null){
+            return "";
+        }
         return getFormattedTime(ainterfacecdrversion8.getMoSms().getSmsData().getSmsDataChild().getSubmitTime());
     }
 
     @XmlElement
-    public Date getRpAckSMSCTime() {
+    public String getRpAckSMSCTime() {
+        if(ainterfacecdrversion8.getMoSms().getSmsData().getSmsDataChild().getRpAckSMSCTime()==null){
+            return "";
+        }
         return getFormattedTime(ainterfacecdrversion8.getMoSms().getSmsData().getSmsDataChild().getRpAckSMSCTime());
     }
 
@@ -83,7 +92,7 @@ public class AINTERFACECDRVERSION8DecoratorAllFields implements Decorator {
     }
 
     @XmlElement(name = "end-time")
-    public Date getEndTimeP() {
+    public String getEndTimeP() {
         return getFormattedTime(ainterfacecdrversion8.getMoSms().getCommonData().getEndTime());
     }
 
