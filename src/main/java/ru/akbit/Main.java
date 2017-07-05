@@ -31,17 +31,18 @@ public class Main {
 
         FileOutputStream fos = new FileOutputStream(args[1]);
         byte[] bufferBegin = ("<?xml version=\"1.0\" encoding=\"UTF-8\"?> \n<A_INTERFACE>").getBytes();
-        byte[] bufferEnd = ("\n</A_INTERFACE>").getBytes();
+        byte[] bufferEnd = ("</A_INTERFACE>").getBytes();
+        fos.write(bufferBegin, 0, bufferBegin.length);
 
+        List<Decorator> list=new ArrayList<Decorator>();
 
-        List<Decorator> resultList = new ArrayList<>();
 
         Files.list(Paths.get(pathName))
                 .filter(Files::isRegularFile)
                 .forEach(filePath -> {
                     try {
-                        unmarshallAndWriteToFile(filePath.toString(), fos, resultList);
-                        System.out.println("RESULT LIST SIZE === " + resultList.size());
+                        unmarshallAndWriteToFile(filePath.toString(), fos,list);
+
                     } catch (IOException e) {
                         e.printStackTrace();
                     } catch (JAXBException e) {
@@ -49,30 +50,33 @@ public class Main {
                     }
                 });
 
-        JAXBContext jaxbContextToWrite = JAXBContext.newInstance(AInterface.class, AINTERFACECDRVERSION8Decorator.class, AINTERFACECDRVERSION8DecoratorAllFields.class);
-        Marshaller marshaller = jaxbContextToWrite.createMarshaller();
-        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-        System.out.println(resultList.size());
-        marshaller.marshal(new AInterface(resultList), fos);
 
 
+        fos.write(bufferEnd, 0, bufferEnd.length);
+        fos.close();
+        System.out.println(list.size());
     }
 
 
-    public static void unmarshallAndWriteToFile(String str, FileOutputStream fos, List<Decorator> resultList) throws IOException, JAXBException {
+    public static void unmarshallAndWriteToFile(String str, FileOutputStream fos,List<Decorator> list) throws IOException, JAXBException {
 
         StringBuilder sb = new StringBuilder();
         Stream<String> stream = Files.lines(Paths.get(str));
         JAXBContext jaxbContext = JAXBContext.newInstance(AINTERFACECDRVERSION8.class);
         Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+
+        JAXBContext jaxbContextToWrite = JAXBContext.newInstance(AINTERFACECDRVERSION8Decorator.class, AINTERFACECDRVERSION8DecoratorAllFields.class);
+        Marshaller marshaller = jaxbContextToWrite.createMarshaller();
+        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+        marshaller.setProperty(Marshaller.JAXB_FRAGMENT, true);
+
         long start = System.currentTimeMillis();
+        System.out.println("current file: " + str);
         stream.forEach(line -> {
             if (line.equals("<?xml version=\"1.0\" encoding=\"UTF-8\"?>")) {
 
             } else {
-                sb.append(line)
-                        .append("\n");
-
+                sb.append(line);
             }
 
             if (line.equals("</A-INTERFACE-CDR-VERSION8>")) {
@@ -81,29 +85,28 @@ public class Main {
                     StringReader reader = new StringReader(sb.toString());
                     AINTERFACECDRVERSION8 mapCdr = (AINTERFACECDRVERSION8) unmarshaller.unmarshal(reader);
                     if (mapCdr.getMoSms() != null) {
+
                         if (isValidSms(mapCdr)) {
-                            resultList.add(new AINTERFACECDRVERSION8Decorator(mapCdr));
 
-
-
+                            marshaller.marshal(new AINTERFACECDRVERSION8DecoratorAllFields(mapCdr),fos);
+                            list.add(new AINTERFACECDRVERSION8DecoratorAllFields(mapCdr));
                         }
-                        if (isSmsValidSecond(mapCdr)) {
-                            resultList.add(new AINTERFACECDRVERSION8DecoratorAllFields(mapCdr));
-                        }
+//                        if (isSmsValidSecond(mapCdr)) {
+//
+//                            marshaller.marshal(new AINTERFACECDRVERSION8DecoratorAllFields(mapCdr),fos);
+//                            list.add(new AINTERFACECDRVERSION8DecoratorAllFields(mapCdr));
+//                        }
 
                     }
                     sb.delete(0, sb.length());
-
-
                 } catch (IllegalAccessException e) {
                     System.out.println(e);
                 } catch (InvocationTargetException e) {
-
                     System.out.println("File not found.");
                 } catch (NoSuchMethodException e) {
                     System.out.println(e);
                 } catch (JAXBException e) {
-                    e.printStackTrace();
+                    System.out.println(e);
                 }
             }
         });

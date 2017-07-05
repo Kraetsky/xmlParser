@@ -9,6 +9,8 @@ import java.util.Date;
 import static ru.akbit.Util.getFormattedImsi;
 import static ru.akbit.Util.getFormattedTime;
 
+
+@XmlRootElement(name="A-INTERFACE-CDR-VERSION8")
 @XmlAccessorType(XmlAccessType.PROPERTY)
 public class AINTERFACECDRVERSION8Decorator implements Decorator {
 

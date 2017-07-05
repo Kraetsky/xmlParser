@@ -6,11 +6,14 @@ import examples.schema.RpDestAddress;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
 
 import static ru.akbit.Util.getFormattedImsi;
 import static ru.akbit.Util.getFormattedTime;
 
+
+@XmlRootElement(name="A-INTERFACE-CDR-VERSION8")
 @XmlAccessorType(XmlAccessType.PROPERTY)
 public class AINTERFACECDRVERSION8DecoratorAllFields implements Decorator {
     private AINTERFACECDRVERSION8 ainterfacecdrversion8;
