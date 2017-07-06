@@ -59,7 +59,7 @@ public class Util {
         return false;
     }
 
-    public static boolean isSmsValidSecond(AINTERFACECDRVERSION8 mapCdr) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException, NullPointerException, NestedNullException {
+    public static boolean isSmsValidSecondVariant(AINTERFACECDRVERSION8 mapCdr) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException, NullPointerException, NestedNullException {
         SmsData smsData = mapCdr.getMoSms().getSmsData();
         if (smsData == null) {
             System.out.println("sms data  is null");
@@ -79,7 +79,9 @@ public class Util {
 
     public static String getFormattedImsi(String imsi) {
         StringBuilder result = new StringBuilder(15);
-
+        if (imsi == null) {
+            System.out.println("imsi is null");
+        }
         Arrays.stream(imsi.split(" "))
                 .forEach(part -> {
                     for (int i = 0; i < part.length(); i += 2) {

@@ -31,18 +31,22 @@ public class AINTERFACECDRVERSION8DecoratorAllFields implements Decorator {
 
     @XmlElement
     public String getImsi() {
+        if (ainterfacecdrversion8.getMoSms().getCommonData().getImsi() == null) {
+            return null;
+        }
         return getFormattedImsi(ainterfacecdrversion8.getMoSms().getCommonData().getImsi());
     }
 
     @XmlElement
     public String getSmsStartTime() {
-        return getFormattedTime(child.getSmsStartTime());
+
+       return getFormattedTime(child.getSmsStartTime());
     }
 
     @XmlElement
     public String getSmsEndTime() {
         if (child.getSmsEndTime()==null){
-            return "";
+            return null;
         }
         return getFormattedTime(child.getSmsEndTime());
     }
@@ -55,7 +59,7 @@ public class AINTERFACECDRVERSION8DecoratorAllFields implements Decorator {
     @XmlElement
     public String getSubmitTime() {
         if (child.getSubmitTime()==null){
-            return "";
+            return null;
         }
         return getFormattedTime(child.getSubmitTime());
     }
@@ -63,7 +67,7 @@ public class AINTERFACECDRVERSION8DecoratorAllFields implements Decorator {
     @XmlElement
     public String getRpAckSMSCTime() {
         if(child.getRpAckSMSCTime()==null){
-            return "";
+            return null;
         }
         return getFormattedTime(child.getRpAckSMSCTime());
     }
@@ -111,7 +115,7 @@ public class AINTERFACECDRVERSION8DecoratorAllFields implements Decorator {
     @XmlElement
     public String getRpDestAdressString() {
         if (child.getRpDestAddress() == null) {
-            return "";
+            return null;
         } else {
             return getFormattedImsi(child.getRpDestAddress().getAddressString());
         }
@@ -120,7 +124,7 @@ public class AINTERFACECDRVERSION8DecoratorAllFields implements Decorator {
     @XmlElement
     public String getTpDestAdressString() {
         if (child.getTpDestAddress() == null) {
-            return "";
+            return null;
         }
         return getFormattedImsi(String.valueOf(child.getTpDestAddress().getAddressString()));
     }
