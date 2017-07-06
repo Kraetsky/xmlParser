@@ -25,30 +25,38 @@ public class Util {
 
     public static boolean isValidSmsDataChild(SmsDataChild child) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException, NestedNullException {
         if (PropertyUtils.getNestedProperty(child, "smsMsgType").toString().equals("1") &&
-                PropertyUtils.getNestedProperty(child, "submitTime") != null &&
-                PropertyUtils.getNestedProperty(child, "concatRef") == null) {
-            return true;
-        }
-        if (PropertyUtils.getNestedProperty(child, "smsMsgType").toString().equals("1") &&
-                PropertyUtils.getNestedProperty(child, "submitTime") != null &&
-                PropertyUtils.getNestedProperty(child, "concatRef") != null &&
-                PropertyUtils.getNestedProperty(child, "concatSeq") != null &&
-                PropertyUtils.getNestedProperty(child, "concatMax") != null) {
-            return true;
-        }
-        if (PropertyUtils.getNestedProperty(child, "smsMsgType").toString().equals("1") &&
-                PropertyUtils.getNestedProperty(child, "submitTime") != null &&
-                PropertyUtils.getNestedProperty(child, "rpAckSMSCTime") != null &&
-                PropertyUtils.getNestedProperty(child, "concatRef") == null) {
-            return true;
-        }
-        if (PropertyUtils.getNestedProperty(child, "smsMsgType").toString().equals("1") &&
-                PropertyUtils.getNestedProperty(child, "submitTime") != null &&
-                PropertyUtils.getNestedProperty(child, "rpAckSMSCTime") != null &&
-                PropertyUtils.getNestedProperty(child, "concatRef") != null &&
-                PropertyUtils.getNestedProperty(child, "concatSeq") != null &&
-                PropertyUtils.getNestedProperty(child, "concatMax") != null) {
-            return true;
+               PropertyUtils.getNestedProperty(child, "submitTime") != null ) {
+           return true;
+
+
+
+
+
+        //        if (PropertyUtils.getNestedProperty(child, "smsMsgType").toString().equals("1") &&
+//                PropertyUtils.getNestedProperty(child, "submitTime") != null &&
+//                PropertyUtils.getNestedProperty(child, "concatRef") == null) {
+//            return true;
+//        }
+//        if (PropertyUtils.getNestedProperty(child, "smsMsgType").toString().equals("1") &&
+//                PropertyUtils.getNestedProperty(child, "submitTime") != null &&
+//                PropertyUtils.getNestedProperty(child, "concatRef") != null &&
+//                PropertyUtils.getNestedProperty(child, "concatSeq") != null &&
+//                PropertyUtils.getNestedProperty(child, "concatMax") != null) {
+//            return true;
+//        }
+//        if (PropertyUtils.getNestedProperty(child, "smsMsgType").toString().equals("1") &&
+//                PropertyUtils.getNestedProperty(child, "submitTime") != null &&
+//                PropertyUtils.getNestedProperty(child, "rpAckSMSCTime") != null &&
+//                PropertyUtils.getNestedProperty(child, "concatRef") == null) {
+//            return true;
+//        }
+//        if (PropertyUtils.getNestedProperty(child, "smsMsgType").toString().equals("1") &&
+//                PropertyUtils.getNestedProperty(child, "submitTime") != null &&
+//                PropertyUtils.getNestedProperty(child, "rpAckSMSCTime") != null &&
+//                PropertyUtils.getNestedProperty(child, "concatRef") != null &&
+//                PropertyUtils.getNestedProperty(child, "concatSeq") != null &&
+//                PropertyUtils.getNestedProperty(child, "concatMax") != null) {
+//            return true;
         } else {
             return false;
         }

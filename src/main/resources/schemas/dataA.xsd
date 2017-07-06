@@ -89,10 +89,10 @@
                           </xs:element>
                           <xs:element type="xs:short" name="mess-reference"/>
                           <xs:element type="xs:string" name="rpAckSMSCTime"/>
-                          <xs:element type="xs:byte" name="ieIdentifier"/>
-                          <xs:element type="xs:short" name="concatRef"/>
-                          <xs:element type="xs:byte" name="concatMax"/>
-                          <xs:element type="xs:byte" name="concatSeq"/>
+                          <xs:element type="xs:string" name="ieIdentifier"/>
+                          <xs:element type="xs:string" name="concatRef"/>
+                          <xs:element type="xs:string" name="concatMax"/>
+                          <xs:element type="xs:string" name="concatSeq"/>
                           <xs:element type="xs:short" name="smsLength"/>
                           <xs:element type="xs:byte" name="smsMsgType"/>
                           <xs:element type="xs:string" name="submitTime"/>

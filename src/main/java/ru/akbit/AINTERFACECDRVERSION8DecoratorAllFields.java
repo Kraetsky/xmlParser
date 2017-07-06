@@ -73,22 +73,35 @@ public class AINTERFACECDRVERSION8DecoratorAllFields implements Decorator {
     }
 
     @XmlElement
-    public byte getIeIdentifier() {
+    public String getIeIdentifier() {
+        if (child.getIeIdentifier()== null) {
+            return null;
+        }
         return child.getIeIdentifier();
     }
 
     @XmlElement
-    public short getConcatRef() {
+    public String getConcatRef() {
+        if (child.getConcatRef()== null) {
+            return null;
+        }
         return child.getConcatRef();
     }
 
     @XmlElement
-    public short getConcatMax() {
+    public String getConcatMax() {
+        if (child.getConcatMax()== null) {
+            return null;
+        }
+
         return child.getConcatMax();
     }
 
     @XmlElement
-    public short getConcatSeq() {
+    public String getConcatSeq() {
+        if (child.getConcatSeq()== null) {
+            return null;
+        }
         return child.getConcatSeq();
     }
 
