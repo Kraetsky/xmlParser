@@ -3,6 +3,7 @@ package ru.akbit;
 
 import examples.schema.AINTERFACECDRVERSION8;
 import examples.schema.SmsData;
+import examples.schema.SmsDataChild;
 import org.apache.commons.beanutils.NestedNullException;
 import org.apache.commons.beanutils.PropertyUtils;
 
@@ -19,44 +20,43 @@ import java.util.stream.Stream;
  */
 public class Util {
 
-
-    public static boolean isValidSms(AINTERFACECDRVERSION8 mapCdr) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException, NestedNullException {
-
-        SmsData smsData = mapCdr.getMoSms().getSmsData();
-        if (smsData.getSmsDataChild() == null) {
-            System.out.println("data child is null");
+    public static boolean isValidSmsDataChild(SmsDataChild child) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException, NestedNullException{
+        if (PropertyUtils.getNestedProperty(child, "smsMsgType").toString().equals("1") &&
+                PropertyUtils.getNestedProperty(child, "submitTime") != null &&
+                PropertyUtils.getNestedProperty(child, "concatRef") == null) {
+            return true;
+        }
+        if (PropertyUtils.getNestedProperty(child, "smsMsgType").toString().equals("1") &&
+                PropertyUtils.getNestedProperty(child, "submitTime") != null &&
+                PropertyUtils.getNestedProperty(child, "concatRef") != null &&
+                PropertyUtils.getNestedProperty(child, "concatSeq") != null &&
+                PropertyUtils.getNestedProperty(child, "concatMax") != null) {
+            return true;
+        }
+        if (PropertyUtils.getNestedProperty(child, "smsMsgType").toString().equals("1") &&
+                PropertyUtils.getNestedProperty(child, "submitTime") != null &&
+                PropertyUtils.getNestedProperty(child, "rpAckSMSCTime") != null &&
+                PropertyUtils.getNestedProperty(child, "concatRef") == null) {
+            return true;
+        }
+        if (PropertyUtils.getNestedProperty(child, "smsMsgType").toString().equals("1") &&
+                PropertyUtils.getNestedProperty(child, "submitTime") != null &&
+                PropertyUtils.getNestedProperty(child, "rpAckSMSCTime") != null &&
+                PropertyUtils.getNestedProperty(child, "concatRef") != null &&
+                PropertyUtils.getNestedProperty(child, "concatSeq") != null &&
+                PropertyUtils.getNestedProperty(child, "concatMax") != null) {
+            return true;
+        } else {
             return false;
         }
+    }
 
-
-        if (PropertyUtils.getNestedProperty(mapCdr, "moSms.smsData.smsDataChild.smsMsgType").toString().equals("1") &&
-                PropertyUtils.getNestedProperty(mapCdr, "moSms.smsData.smsDataChild.submitTime") != null &&
-                PropertyUtils.getNestedProperty(mapCdr, "moSms.smsData.smsDataChild.concatRef") == null) {
+    public static boolean isValidSms(AINTERFACECDRVERSION8 mapCdr) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException, NestedNullException {
+        if (mapCdr.getMoSms() != null && mapCdr.getMoSms().getSmsData().getSmsDataChild() != null) {
             return true;
         }
-        if (PropertyUtils.getNestedProperty(mapCdr, "moSms.smsData.smsDataChild.smsMsgType").toString().equals("1") &&
-                PropertyUtils.getNestedProperty(mapCdr, "moSms.smsData.smsDataChild.submitTime") != null &&
-                PropertyUtils.getNestedProperty(mapCdr, "moSms.smsData.smsDataChild.concatRef") != null &&
-                PropertyUtils.getNestedProperty(mapCdr, "moSms.smsData.smsDataChild.concatSeq") != null &&
-                PropertyUtils.getNestedProperty(mapCdr, "moSms.smsData.smsDataChild.concatMax") != null) {
-            return true;
-        }
-        if (PropertyUtils.getNestedProperty(mapCdr, "moSms.smsData.smsDataChild.smsMsgType").toString().equals("1") &&
-                PropertyUtils.getNestedProperty(mapCdr, "moSms.smsData.smsDataChild.submitTime") != null &&
-                PropertyUtils.getNestedProperty(mapCdr, "moSms.smsData.smsDataChild.rpAckSMSCTime") != null &&
-                PropertyUtils.getNestedProperty(mapCdr, "moSms.smsData.smsDataChild.concatRef") == null) {
-            return true;
-        }
-        if (PropertyUtils.getNestedProperty(mapCdr, "moSms.smsData.smsDataChild.smsMsgType").toString().equals("1") &&
-                PropertyUtils.getNestedProperty(mapCdr, "moSms.smsData.smsDataChild.submitTime") != null &&
-                PropertyUtils.getNestedProperty(mapCdr, "moSms.smsData.smsDataChild.rpAckSMSCTime") != null &&
-                PropertyUtils.getNestedProperty(mapCdr, "moSms.smsData.smsDataChild.concatRef") != null &&
-                PropertyUtils.getNestedProperty(mapCdr, "moSms.smsData.smsDataChild.concatSeq") != null &&
-                PropertyUtils.getNestedProperty(mapCdr, "moSms.smsData.smsDataChild.concatMax") != null) {
-            return true;
-        } else return false;
-
-
+        System.out.println("data child is null");
+        return false;
     }
 
     public static boolean isSmsValidSecond(AINTERFACECDRVERSION8 mapCdr) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException, NullPointerException, NestedNullException {

@@ -42,8 +42,8 @@
                     </xs:element>
                     <xs:element type="xs:byte" name="cmServiceType"/>
                     <xs:element type="xs:string" name="imsi"/>
-                    <xs:element type="xs:int" name="first-tmsi"/>
-                    <xs:element type="xs:int" name="current-tmsi"/>
+                    <xs:element type="xs:string" name="first-tmsi"/>
+                    <xs:element type="xs:string" name="current-tmsi"/>
                     <xs:element type="xs:byte" name="bssmap-cause"/>
                     <xs:element name="cm-aborted">
                       <xs:complexType>
@@ -64,7 +64,7 @@
               <xs:element name="sms-data">
                 <xs:complexType>
                   <xs:sequence>
-                    <xs:element name="SMSData">
+                    <xs:element name="SMSData" maxOccurs="unbounded" minOccurs="0">
                       <xs:complexType>
                         <xs:sequence>
                           <xs:element type="xs:string" name="smsStartTime"/>
@@ -87,8 +87,7 @@
                               </xs:sequence>
                             </xs:complexType>
                           </xs:element>
-                          <xs:element type="xs:byte" name="mess-reference"/>
-                          <xs:element type="xs:string" name="submitTime"/>
+                          <xs:element type="xs:short" name="mess-reference"/>
                           <xs:element type="xs:string" name="rpAckSMSCTime"/>
                           <xs:element type="xs:byte" name="ieIdentifier"/>
                           <xs:element type="xs:short" name="concatRef"/>
@@ -96,6 +95,7 @@
                           <xs:element type="xs:byte" name="concatSeq"/>
                           <xs:element type="xs:short" name="smsLength"/>
                           <xs:element type="xs:byte" name="smsMsgType"/>
+                          <xs:element type="xs:string" name="submitTime"/>
                         </xs:sequence>
                       </xs:complexType>
                     </xs:element>

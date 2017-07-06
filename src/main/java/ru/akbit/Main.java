@@ -2,6 +2,7 @@ package ru.akbit;
 
 
 import examples.schema.AINTERFACECDRVERSION8;
+import examples.schema.SmsDataChild;
 import org.apache.commons.beanutils.PropertyUtils;
 
 import javax.xml.bind.JAXBContext;
@@ -16,6 +17,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import static ru.akbit.Util.*;
 
 /**
@@ -23,7 +27,12 @@ import static ru.akbit.Util.*;
  */
 public class Main {
 
+//    Logger log = LoggerFactory.getLogger(getClass());
+
     public static void main(String[] args) throws IOException, JAXBException {
+
+
+
         if (!isArgsValid(args)) {
             return;
         }
@@ -34,14 +43,14 @@ public class Main {
         byte[] bufferEnd = ("</A_INTERFACE>").getBytes();
         fos.write(bufferBegin, 0, bufferBegin.length);
 
-        List<Decorator> list=new ArrayList<Decorator>();
+        List<Decorator> list = new ArrayList<Decorator>();
 
 
         Files.list(Paths.get(pathName))
                 .filter(Files::isRegularFile)
                 .forEach(filePath -> {
                     try {
-                        unmarshallAndWriteToFile(filePath.toString(), fos,list);
+                        unmarshallAndWriteToFile(filePath.toString(), fos, list);
 
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -51,14 +60,13 @@ public class Main {
                 });
 
 
-
         fos.write(bufferEnd, 0, bufferEnd.length);
         fos.close();
         System.out.println(list.size());
     }
 
 
-    public static void unmarshallAndWriteToFile(String str, FileOutputStream fos,List<Decorator> list) throws IOException, JAXBException {
+    public static void unmarshallAndWriteToFile(String str, FileOutputStream fos, List<Decorator> list) throws IOException, JAXBException {
 
         StringBuilder sb = new StringBuilder();
         Stream<String> stream = Files.lines(Paths.get(str));
@@ -72,6 +80,7 @@ public class Main {
 
         long start = System.currentTimeMillis();
         System.out.println("current file: " + str);
+//        log.debug("current file: {}", str);
         stream.forEach(line -> {
             if (line.equals("<?xml version=\"1.0\" encoding=\"UTF-8\"?>")) {
 
@@ -81,23 +90,21 @@ public class Main {
 
             if (line.equals("</A-INTERFACE-CDR-VERSION8>")) {
                 try {
-
                     StringReader reader = new StringReader(sb.toString());
                     AINTERFACECDRVERSION8 mapCdr = (AINTERFACECDRVERSION8) unmarshaller.unmarshal(reader);
-                    if (mapCdr.getMoSms() != null) {
-
-                        if (isValidSms(mapCdr)) {
-
-                            marshaller.marshal(new AINTERFACECDRVERSION8DecoratorAllFields(mapCdr),fos);
-                            list.add(new AINTERFACECDRVERSION8DecoratorAllFields(mapCdr));
+                    if (isValidSms(mapCdr)) {
+                        for (SmsDataChild child : mapCdr.getMoSms().getSmsData().getSmsDataChild()) {
+                            if (isValidSmsDataChild(child)) {
+                                list.add(new AINTERFACECDRVERSION8DecoratorAllFields(mapCdr, child));
+                                marshaller.marshal(new AINTERFACECDRVERSION8DecoratorAllFields(mapCdr, child), fos);
+                            }
                         }
+                    }
 //                        if (isSmsValidSecond(mapCdr)) {
 //
 //                            marshaller.marshal(new AINTERFACECDRVERSION8DecoratorAllFields(mapCdr),fos);
 //                            list.add(new AINTERFACECDRVERSION8DecoratorAllFields(mapCdr));
 //                        }
-
-                    }
                     sb.delete(0, sb.length());
                 } catch (IllegalAccessException e) {
                     System.out.println(e);
@@ -105,6 +112,7 @@ public class Main {
                     System.out.println("File not found.");
                 } catch (NoSuchMethodException e) {
                     System.out.println(e);
+                    e.printStackTrace();
                 } catch (JAXBException e) {
                     System.out.println(e);
                 }

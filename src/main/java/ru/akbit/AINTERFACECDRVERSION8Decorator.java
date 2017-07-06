@@ -28,9 +28,9 @@ public class AINTERFACECDRVERSION8Decorator implements Decorator {
         return getFormattedImsi(ainterfacecdrversion8.getMoSms().getCommonData().getImsi());
     }
 
-    @XmlElement
-    public String getSmsStartTime() {
-        return getFormattedTime(ainterfacecdrversion8.getMoSms().getSmsData().getSmsDataChild().getSmsStartTime());
-    }
+//    @XmlElement
+//    public String getSmsStartTime() {
+//        return getFormattedTime(ainterfacecdrversion8.getMoSms().getSmsData().getSmsDataChild().getSmsStartTime());
+//    }
 
 }

@@ -2,6 +2,7 @@ package ru.akbit;
 
 import examples.schema.AINTERFACECDRVERSION8;
 import examples.schema.RpDestAddress;
+import examples.schema.SmsDataChild;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -16,13 +17,16 @@ import static ru.akbit.Util.getFormattedTime;
 @XmlRootElement(name="A-INTERFACE-CDR-VERSION8")
 @XmlAccessorType(XmlAccessType.PROPERTY)
 public class AINTERFACECDRVERSION8DecoratorAllFields implements Decorator {
+
     private AINTERFACECDRVERSION8 ainterfacecdrversion8;
+    private SmsDataChild child;
 
     public AINTERFACECDRVERSION8DecoratorAllFields() {
     }
 
-    public AINTERFACECDRVERSION8DecoratorAllFields(AINTERFACECDRVERSION8 ainterfacecdrversion8) {
+    public AINTERFACECDRVERSION8DecoratorAllFields(AINTERFACECDRVERSION8 ainterfacecdrversion8, SmsDataChild child) {
         this.ainterfacecdrversion8 = ainterfacecdrversion8;
+        this.child = child;
     }
 
     @XmlElement
@@ -32,66 +36,66 @@ public class AINTERFACECDRVERSION8DecoratorAllFields implements Decorator {
 
     @XmlElement
     public String getSmsStartTime() {
-        return getFormattedTime(ainterfacecdrversion8.getMoSms().getSmsData().getSmsDataChild().getSmsStartTime());
+        return getFormattedTime(child.getSmsStartTime());
     }
 
     @XmlElement
     public String getSmsEndTime() {
-        if (ainterfacecdrversion8.getMoSms().getSmsData().getSmsDataChild().getSmsEndTime()==null){
+        if (child.getSmsEndTime()==null){
             return "";
         }
-        return getFormattedTime(ainterfacecdrversion8.getMoSms().getSmsData().getSmsDataChild().getSmsEndTime());
+        return getFormattedTime(child.getSmsEndTime());
     }
 
     @XmlElement(name = "mess-reference")
-    public byte getMessReference() {
-        return ainterfacecdrversion8.getMoSms().getSmsData().getSmsDataChild().getMessReference();
+    public short getMessReference() {
+        return child.getMessReference();
     }
 
     @XmlElement
     public String getSubmitTime() {
-        if (ainterfacecdrversion8.getMoSms().getSmsData().getSmsDataChild().getSubmitTime()==null){
+        if (child.getSubmitTime()==null){
             return "";
         }
-        return getFormattedTime(ainterfacecdrversion8.getMoSms().getSmsData().getSmsDataChild().getSubmitTime());
+        return getFormattedTime(child.getSubmitTime());
     }
 
     @XmlElement
     public String getRpAckSMSCTime() {
-        if(ainterfacecdrversion8.getMoSms().getSmsData().getSmsDataChild().getRpAckSMSCTime()==null){
+        if(child.getRpAckSMSCTime()==null){
             return "";
         }
-        return getFormattedTime(ainterfacecdrversion8.getMoSms().getSmsData().getSmsDataChild().getRpAckSMSCTime());
+        return getFormattedTime(child.getRpAckSMSCTime());
     }
 
     @XmlElement
     public byte getIeIdentifier() {
-        return ainterfacecdrversion8.getMoSms().getSmsData().getSmsDataChild().getIeIdentifier();
+        return child.getIeIdentifier();
     }
 
     @XmlElement
     public short getConcatRef() {
-        return ainterfacecdrversion8.getMoSms().getSmsData().getSmsDataChild().getConcatRef();
+        return child.getConcatRef();
     }
 
     @XmlElement
     public short getConcatMax() {
-        return ainterfacecdrversion8.getMoSms().getSmsData().getSmsDataChild().getConcatMax();
+        return child.getConcatMax();
     }
 
     @XmlElement
     public short getConcatSeq() {
-        return ainterfacecdrversion8.getMoSms().getSmsData().getSmsDataChild().getConcatSeq();
+        return child.getConcatSeq();
     }
 
     @XmlElement
     public short getSmsLength() {
-        return ainterfacecdrversion8.getMoSms().getSmsData().getSmsDataChild().getSmsLength();
+        return child.getSmsLength();
     }
 
     @XmlElement
     public short getSmsMsgType() {
-        return ainterfacecdrversion8.getMoSms().getSmsData().getSmsDataChild().getSmsMsgType();
+        return child.getSmsMsgType();
     }
 
     @XmlElement(name = "end-time")
@@ -106,19 +110,19 @@ public class AINTERFACECDRVERSION8DecoratorAllFields implements Decorator {
 
     @XmlElement
     public String getRpDestAdressString() {
-        if (ainterfacecdrversion8.getMoSms().getSmsData().getSmsDataChild().getRpDestAddress() == null) {
+        if (child.getRpDestAddress() == null) {
             return "";
         } else {
-            return ainterfacecdrversion8.getMoSms().getSmsData().getSmsDataChild().getRpDestAddress().getAddressString();
+            return getFormattedImsi(child.getRpDestAddress().getAddressString());
         }
     }
 
     @XmlElement
     public String getTpDestAdressString() {
-        if (ainterfacecdrversion8.getMoSms().getSmsData().getSmsDataChild().getTpDestAddress() == null) {
+        if (child.getTpDestAddress() == null) {
             return "";
         }
-        return getFormattedImsi(ainterfacecdrversion8.getMoSms().getSmsData().getSmsDataChild().getTpDestAddress().getAddressString());
+        return getFormattedImsi(String.valueOf(child.getTpDestAddress().getAddressString()));
     }
 
 }
