@@ -34,11 +34,9 @@ public class Main {
         UnmarshallerAndWriter unmarshallerAndWriter = new UnmarshallerAndWriter();
 
 
-
         if (!isArgsValid(args)) {
             return;
-        }
-        else{
+        } else {
             unmarshallerAndWriter.readAndWriteToFile(args[0], args[1]);
         }
 

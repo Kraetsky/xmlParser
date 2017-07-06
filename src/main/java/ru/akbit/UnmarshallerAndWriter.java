@@ -114,7 +114,7 @@ public class UnmarshallerAndWriter {
                 }
             }
         });
-        System.out.println("Fields are receieved in " + (System.currentTimeMillis() - start) + "millis");
+        log.debug("Fields are receieved in", (System.currentTimeMillis() - start) + "millis.");
 
     }
 

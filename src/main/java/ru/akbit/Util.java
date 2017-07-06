@@ -6,6 +6,8 @@ import examples.schema.SmsData;
 import examples.schema.SmsDataChild;
 import org.apache.commons.beanutils.NestedNullException;
 import org.apache.commons.beanutils.PropertyUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -19,8 +21,9 @@ import java.util.stream.Stream;
  * Created by kraetsky on 20.06.2017.
  */
 public class Util {
+    private static final Logger log = LoggerFactory.getLogger(UnmarshallerAndWriter.class);
 
-    public static boolean isValidSmsDataChild(SmsDataChild child) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException, NestedNullException{
+    public static boolean isValidSmsDataChild(SmsDataChild child) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException, NestedNullException {
         if (PropertyUtils.getNestedProperty(child, "smsMsgType").toString().equals("1") &&
                 PropertyUtils.getNestedProperty(child, "submitTime") != null &&
                 PropertyUtils.getNestedProperty(child, "concatRef") == null) {
@@ -52,21 +55,27 @@ public class Util {
     }
 
     public static boolean isValidSms(AINTERFACECDRVERSION8 mapCdr) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException, NestedNullException {
-        if (mapCdr.getMoSms() != null && mapCdr.getMoSms().getSmsData().getSmsDataChild() != null) {
+        if (mapCdr.getMoSms() != null &&
+                mapCdr.getMoSms().getSmsData() != null &&
+                mapCdr.getMoSms().getSmsData().getSmsDataChild() != null) {
             return true;
         }
-        System.out.println("data child is null");
+        log.debug("data child is null");
+
         return false;
+
+
     }
+
 
     public static boolean isSmsValidSecondVariant(AINTERFACECDRVERSION8 mapCdr) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException, NullPointerException, NestedNullException {
         SmsData smsData = mapCdr.getMoSms().getSmsData();
         if (smsData == null) {
-            System.out.println("sms data  is null");
+            log.debug("sms data is null");
             return false;
         }
         if (smsData.getSmsDataChild() == null) {
-            System.out.println("data child is null");
+            log.debug("data child is null");
             return false;
         }
 
@@ -79,9 +88,7 @@ public class Util {
 
     public static String getFormattedImsi(String imsi) {
         StringBuilder result = new StringBuilder(15);
-        if (imsi == null) {
-            System.out.println("imsi is null");
-        }
+
         Arrays.stream(imsi.split(" "))
                 .forEach(part -> {
                     for (int i = 0; i < part.length(); i += 2) {

@@ -14,7 +14,7 @@ import static ru.akbit.Util.getFormattedImsi;
 import static ru.akbit.Util.getFormattedTime;
 
 
-@XmlRootElement(name="A-INTERFACE-CDR-VERSION8")
+@XmlRootElement(name = "A-INTERFACE-CDR-VERSION8")
 @XmlAccessorType(XmlAccessType.PROPERTY)
 public class AINTERFACECDRVERSION8DecoratorAllFields implements Decorator {
 
@@ -40,12 +40,12 @@ public class AINTERFACECDRVERSION8DecoratorAllFields implements Decorator {
     @XmlElement
     public String getSmsStartTime() {
 
-       return getFormattedTime(child.getSmsStartTime());
+        return getFormattedTime(child.getSmsStartTime());
     }
 
     @XmlElement
     public String getSmsEndTime() {
-        if (child.getSmsEndTime()==null){
+        if (child.getSmsEndTime() == null) {
             return null;
         }
         return getFormattedTime(child.getSmsEndTime());
@@ -58,7 +58,7 @@ public class AINTERFACECDRVERSION8DecoratorAllFields implements Decorator {
 
     @XmlElement
     public String getSubmitTime() {
-        if (child.getSubmitTime()==null){
+        if (child.getSubmitTime() == null) {
             return null;
         }
         return getFormattedTime(child.getSubmitTime());
@@ -66,7 +66,7 @@ public class AINTERFACECDRVERSION8DecoratorAllFields implements Decorator {
 
     @XmlElement
     public String getRpAckSMSCTime() {
-        if(child.getRpAckSMSCTime()==null){
+        if (child.getRpAckSMSCTime() == null) {
             return null;
         }
         return getFormattedTime(child.getRpAckSMSCTime());
