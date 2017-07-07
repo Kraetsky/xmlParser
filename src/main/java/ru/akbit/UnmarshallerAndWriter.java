@@ -18,6 +18,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Stream;
 
 import static ru.akbit.Util.isValidSms;
@@ -32,8 +33,8 @@ public class UnmarshallerAndWriter {
 
 
     public void readAndWriteToFile(String directoryPath, String outputFilePath) throws IOException {
-        List<Decorator> list = new ArrayList<Decorator>();
-
+        long startTime = System.currentTimeMillis();
+        AtomicLong counter = new AtomicLong(0);
 
         FileOutputStream fos = new FileOutputStream(outputFilePath);
 
@@ -46,7 +47,7 @@ public class UnmarshallerAndWriter {
                 .filter(Files::isRegularFile)
                 .forEach(filePath -> {
                     try {
-                        unmarshallAndWriteToFile(filePath.toString(), fos, list);
+                        unmarshallAndWriteToFile(filePath.toString(), fos, counter);
                         log.debug("current file: {}", filePath.toString());
                     } catch (IOException ioe) {
                         log.error("IO error: ", ioe);
@@ -58,23 +59,23 @@ public class UnmarshallerAndWriter {
 
         fos.write(bufferEnd, 0, bufferEnd.length);
         fos.close();
-        log.debug("Parsing finished succesfully, count: {}", list.size());
+        long workingTimeInSeconds = (System.currentTimeMillis() - startTime) / 1000;
+        log.debug("Parsing finished succesfully in {} seconds, count: {}", workingTimeInSeconds, counter.get());
     }
 
 
-    public void unmarshallAndWriteToFile(String filePath, FileOutputStream fos, List<Decorator> list) throws IOException, JAXBException {
+    public void unmarshallAndWriteToFile(String filePath, FileOutputStream fos, AtomicLong counter) throws IOException, JAXBException {
 
         StringBuilder sb = new StringBuilder();
         Stream<String> stream = Files.lines(Paths.get(filePath));
-        JAXBContext jaxbContext = JAXBContext.newInstance(AINTERFACECDRVERSION8.class);
+        JAXBContext jaxbContext = SingleJAXBContext.getInContext();
         Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 
-        JAXBContext jaxbContextToWrite = JAXBContext.newInstance(AINTERFACECDRVERSION8Decorator.class, AINTERFACECDRVERSION8DecoratorAllFields.class);
+        JAXBContext jaxbContextToWrite = SingleJAXBContext.getOutContext();
         Marshaller marshaller = jaxbContextToWrite.createMarshaller();
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
         marshaller.setProperty(Marshaller.JAXB_FRAGMENT, true);
 
-        long start = System.currentTimeMillis();
         System.out.println("current file: " + filePath);
 //        log.debug("current file: {}", str);
         stream.forEach(line -> {
@@ -91,7 +92,7 @@ public class UnmarshallerAndWriter {
                     if (isValidSms(mapCdr)) {
                         for (SmsDataChild child : mapCdr.getMoSms().getSmsData().getSmsDataChild()) {
                             if (isValidSmsDataChild(child)) {
-                                list.add(new AINTERFACECDRVERSION8DecoratorAllFields(mapCdr, child));
+                                counter.getAndIncrement();
                                 marshaller.marshal(new AINTERFACECDRVERSION8DecoratorAllFields(mapCdr, child), fos);
                             }
                         }
@@ -114,8 +115,6 @@ public class UnmarshallerAndWriter {
                 }
             }
         });
-        log.debug("Fields are receieved in", (System.currentTimeMillis() - start) + "millis.");
-
     }
 
     public static boolean isArgsValid(String[] args) {
