@@ -16,12 +16,9 @@ import java.io.StringReader;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Stream;
-
-import static ru.akbit.Util.isValidSms;
+import static ru.akbit.Util.isSmsExist;
 import static ru.akbit.Util.isValidSmsDataChild;
 
 public class UnmarshallerAndWriter {
@@ -68,11 +65,11 @@ public class UnmarshallerAndWriter {
 
         StringBuilder sb = new StringBuilder();
         Stream<String> stream = Files.lines(Paths.get(filePath));
-        JAXBContext jaxbContext = SingleJAXBContext.getInContext();
-        Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+        JAXBContext jaxbInContext = SingleJAXBContext.getInContext();
+        Unmarshaller unmarshaller = jaxbInContext.createUnmarshaller();
 
-        JAXBContext jaxbContextToWrite = SingleJAXBContext.getOutContext();
-        Marshaller marshaller = jaxbContextToWrite.createMarshaller();
+        JAXBContext jaxbOutContext = SingleJAXBContext.getOutContext();
+        Marshaller marshaller = jaxbOutContext.createMarshaller();
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
         marshaller.setProperty(Marshaller.JAXB_FRAGMENT, true);
 
@@ -89,13 +86,17 @@ public class UnmarshallerAndWriter {
                 try {
                     StringReader reader = new StringReader(sb.toString());
                     AINTERFACECDRVERSION8 mapCdr = (AINTERFACECDRVERSION8) unmarshaller.unmarshal(reader);
-                    if (isValidSms(mapCdr)) {
+                    if (isSmsExist(mapCdr)) {
                         for (SmsDataChild child : mapCdr.getMoSms().getSmsData().getSmsDataChild()) {
-                            if (isValidSmsDataChild(child)) {
+                            if (isValidSmsDataChild(mapCdr, child)) {
                                 counter.getAndIncrement();
                                 marshaller.marshal(new AINTERFACECDRVERSION8DecoratorAllFields(mapCdr, child), fos);
                             }
                         }
+                    }
+                    if (mapCdr.getMoSms()!=null && (mapCdr.getMoSms().getSmsData()==null || mapCdr.getMoSms().getSmsData().getSmsDataChild().size()==0 ) && (mapCdr.getMoSms().getCommonData().getCmServiceType().equals("4"))){
+                        counter.getAndIncrement();
+                        marshaller.marshal(new AINTERFACECDRVERSION8Decorator(mapCdr), fos);
                     }
 //                        if (isSmsValidSecondVariant(mapCdr)) {
 //

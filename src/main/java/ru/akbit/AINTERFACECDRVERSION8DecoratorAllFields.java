@@ -121,7 +121,7 @@ public class AINTERFACECDRVERSION8DecoratorAllFields implements Decorator {
     }
 
     @XmlElement
-    public short getCmServiceType() {
+    public String getCmServiceType() {
         return ainterfacecdrversion8.getMoSms().getCommonData().getCmServiceType();
     }
 

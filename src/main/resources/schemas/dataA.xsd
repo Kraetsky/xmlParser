@@ -40,7 +40,7 @@
                         </xs:sequence>
                       </xs:complexType>
                     </xs:element>
-                    <xs:element type="xs:byte" name="cmServiceType"/>
+                    <xs:element type="xs:string" name="cmServiceType"/>
                     <xs:element type="xs:string" name="imsi"/>
                     <xs:element type="xs:string" name="first-tmsi"/>
                     <xs:element type="xs:string" name="current-tmsi"/>

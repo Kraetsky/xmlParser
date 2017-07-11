@@ -25,12 +25,19 @@ public class AINTERFACECDRVERSION8Decorator implements Decorator {
 
     @XmlElement
     public String getImsi() {
+        if (ainterfacecdrversion8.getMoSms().getCommonData().getImsi() == null) {
+            return null;
+        }
         return getFormattedImsi(ainterfacecdrversion8.getMoSms().getCommonData().getImsi());
     }
+    @XmlElement(name = "end-time")
+    public String getEndTimeP() {
+        return getFormattedTime(ainterfacecdrversion8.getMoSms().getCommonData().getEndTime());
+    }
 
-//    @XmlElement
-//    public String getSmsStartTime() {
-//        return getFormattedTime(ainterfacecdrversion8.getMoSms().getSmsData().getSmsDataChild().getSmsStartTime());
-//    }
+    @XmlElement
+    public String getCmServiceType() {
+        return ainterfacecdrversion8.getMoSms().getCommonData().getCmServiceType();
+    }
 
 }

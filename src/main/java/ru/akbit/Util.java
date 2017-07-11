@@ -8,14 +8,8 @@ import org.apache.commons.beanutils.NestedNullException;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.*;
-import java.util.stream.Stream;
 
 /**
  * Created by kraetsky on 20.06.2017.
@@ -23,7 +17,7 @@ import java.util.stream.Stream;
 public class Util {
     private static final Logger log = LoggerFactory.getLogger(UnmarshallerAndWriter.class);
 
-    public static boolean isValidSmsDataChild(SmsDataChild child) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException, NestedNullException {
+    public static boolean isValidSmsDataChild(AINTERFACECDRVERSION8 mapCdr, SmsDataChild child) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException, NestedNullException {
         if (PropertyUtils.getNestedProperty(child, "smsMsgType").toString().equals("1") &&
                PropertyUtils.getNestedProperty(child, "submitTime") != null ) {
            return true;
@@ -57,12 +51,13 @@ public class Util {
 //                PropertyUtils.getNestedProperty(child, "concatSeq") != null &&
 //                PropertyUtils.getNestedProperty(child, "concatMax") != null) {
 //            return true;
-        } else {
+        }
+        else {
             return false;
         }
     }
 
-    public static boolean isValidSms(AINTERFACECDRVERSION8 mapCdr) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException, NestedNullException {
+    public static boolean isSmsExist(AINTERFACECDRVERSION8 mapCdr) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException, NestedNullException {
         if (mapCdr.getMoSms() != null &&
                 mapCdr.getMoSms().getSmsData() != null &&
                 mapCdr.getMoSms().getSmsData().getSmsDataChild() != null) {
