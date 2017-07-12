@@ -18,8 +18,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Stream;
-import static ru.akbit.Util.isSmsExist;
-import static ru.akbit.Util.isValidSmsDataChild;
+
+import static ru.akbit.Util.*;
 
 public class UnmarshallerAndWriter {
 
@@ -88,16 +88,21 @@ public class UnmarshallerAndWriter {
                     AINTERFACECDRVERSION8 mapCdr = (AINTERFACECDRVERSION8) unmarshaller.unmarshal(reader);
                     if (isSmsExist(mapCdr)) {
                         for (SmsDataChild child : mapCdr.getMoSms().getSmsData().getSmsDataChild()) {
-                            if (isValidSmsDataChild(mapCdr, child)) {
-                                counter.getAndIncrement();
-                                marshaller.marshal(new AINTERFACECDRVERSION8DecoratorAllFields(mapCdr, child), fos);
+                            if (isSmsStartTimeValid(child)) {
+                                if (isValidSmsDataChild(mapCdr, child)) {
+                                    counter.getAndIncrement();
+                                    marshaller.marshal(new AINTERFACECDRVERSION8DecoratorAllFields(mapCdr, child), fos);
+                                }
                             }
                         }
                     }
-                    if (mapCdr.getMoSms()!=null && (mapCdr.getMoSms().getSmsData()==null || mapCdr.getMoSms().getSmsData().getSmsDataChild().size()==0 ) && (mapCdr.getMoSms().getCommonData().getCmServiceType().equals("4"))){
-                        counter.getAndIncrement();
-                        marshaller.marshal(new AINTERFACECDRVERSION8Decorator(mapCdr), fos);
+                    if (isSmsOfType4(mapCdr)) {
+                        if (isRecordClosingTimeValid(mapCdr)) {
+                            counter.getAndIncrement();
+                            marshaller.marshal(new AINTERFACECDRVERSION8Decorator(mapCdr), fos);
+                        }
                     }
+
 //                        if (isSmsValidSecondVariant(mapCdr)) {
 //
 //                            marshaller.marshal(new AINTERFACECDRVERSION8DecoratorAllFields(mapCdr),fos);

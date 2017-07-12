@@ -8,7 +8,12 @@ import org.apache.commons.beanutils.NestedNullException;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import java.lang.reflect.InvocationTargetException;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 /**
@@ -19,14 +24,11 @@ public class Util {
 
     public static boolean isValidSmsDataChild(AINTERFACECDRVERSION8 mapCdr, SmsDataChild child) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException, NestedNullException {
         if (PropertyUtils.getNestedProperty(child, "smsMsgType").toString().equals("1") &&
-               PropertyUtils.getNestedProperty(child, "submitTime") != null ) {
-           return true;
+                PropertyUtils.getNestedProperty(child, "submitTime") != null) {
+            return true;
 
 
-
-
-
-        //        if (PropertyUtils.getNestedProperty(child, "smsMsgType").toString().equals("1") &&
+            //        if (PropertyUtils.getNestedProperty(child, "smsMsgType").toString().equals("1") &&
 //                PropertyUtils.getNestedProperty(child, "submitTime") != null &&
 //                PropertyUtils.getNestedProperty(child, "concatRef") == null) {
 //            return true;
@@ -51,8 +53,7 @@ public class Util {
 //                PropertyUtils.getNestedProperty(child, "concatSeq") != null &&
 //                PropertyUtils.getNestedProperty(child, "concatMax") != null) {
 //            return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -60,7 +61,8 @@ public class Util {
     public static boolean isSmsExist(AINTERFACECDRVERSION8 mapCdr) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException, NestedNullException {
         if (mapCdr.getMoSms() != null &&
                 mapCdr.getMoSms().getSmsData() != null &&
-                mapCdr.getMoSms().getSmsData().getSmsDataChild() != null) {
+                mapCdr.getMoSms().getSmsData().getSmsDataChild() != null &&
+                mapCdr.getMoSms().getSmsData().getSmsDataChild().size() != 0) {
             return true;
         }
         log.debug("data child is null");
@@ -70,6 +72,11 @@ public class Util {
 
     }
 
+    public static boolean isSmsOfType4(AINTERFACECDRVERSION8 mapCdr) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException, NestedNullException {
+        return mapCdr.getMoSms() != null &&
+                (mapCdr.getMoSms().getSmsData() == null || mapCdr.getMoSms().getSmsData().getSmsDataChild().size() == 0) &&
+                (mapCdr.getMoSms().getCommonData().getCmServiceType().equals("4"));
+    }
 
     public static boolean isSmsValidSecondVariant(AINTERFACECDRVERSION8 mapCdr) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException, NullPointerException, NestedNullException {
         SmsData smsData = mapCdr.getMoSms().getSmsData();
@@ -116,11 +123,37 @@ public class Util {
 
 
             Date date = new Date(Long.parseLong(sb.toString()));
-
-            return date.toString();
+            LocalDateTime dateTime = LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            String formattedDateTime = dateTime.format(formatter);
+            return formattedDateTime;
         } else {
             return null;
         }
+    }
+    public static boolean isSmsStartTimeValid(SmsDataChild child) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+        if (PropertyUtils.getNestedProperty(child, "smsStartTime") == null) {
+            return false;
+        }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime startTime = LocalDateTime.parse("2017-07-05 08:00:00", formatter);
+        LocalDateTime currentSmsTime = LocalDateTime.parse(getFormattedTime(PropertyUtils.getNestedProperty(child, "smsStartTime").toString()), formatter);
+        long seconds = Duration.between(startTime, currentSmsTime).getSeconds();
+        if (seconds <= 900) {
+            return true;
+        } else return false;
+    }
+    public static boolean isRecordClosingTimeValid(AINTERFACECDRVERSION8 mapCdr) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+        if (PropertyUtils.getNestedProperty(mapCdr, "moSms.commonData.recordClosingTime") == null){
+            return false;
+        }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime startTime = LocalDateTime.parse("2017-07-05 08:00:00", formatter);
+        LocalDateTime currentTime = LocalDateTime.parse(getFormattedTime(PropertyUtils.getNestedProperty(mapCdr, "moSms.commonData.recordClosingTime").toString()), formatter);
+        long seconds = Duration.between(startTime, currentTime).getSeconds();
+        if (seconds <= 900) {
+            return true;
+        } else return false;
     }
 
 
