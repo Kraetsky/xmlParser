@@ -1,2 +1,3 @@
 adding changes to this text file
-let's see what happens
+it's interesting to see what will happen with this conflict
+
